@@ -34,5 +34,5 @@ def fasta_printer(QueryKey, WebEnv):
     subprocess.run(printer, shell=True)
 
 ids_getter()
-ids_parser()
-fasta_printer
+QueryKey, WebEnv = ids_parser()
+fasta_printer(QueryKey, WebEnv)
