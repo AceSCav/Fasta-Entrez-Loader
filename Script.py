@@ -1,8 +1,6 @@
 import sys
 import subprocess
 import os
-#wget https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi/\?db\=nucleotide\&term\="Psammodromus algirus[organism],cytb[gene]" -O ~/Pal_Ids.xml
-#https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi/\?db\=nucleotide\&usehistory\=y\­&query_key\=1\&­WebEnv\=MCID_67c86d8c425d01644607ea69\&rettype\=fasta -O ~/q1.fasta
 
 if len(sys.argv) != 3:
     print("Usage: Script.py 'database' 'organism'")
