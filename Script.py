@@ -12,22 +12,26 @@ database = sys.argv[1]
 organism = sys.argv[2]
 
 def ids_getter():
-    search = f'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi\?db\="{database}"\&term\="{organism}"\&usehistory\=y'
+    search = f'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi\?db\="{database}"\&term\="{organism}"\&usehistory\=y\&retmax\=10000'
     url_maker = f'wget {search} -O Ids.xml'
     subprocess.run(url_maker, shell=True)
 
 def ids_parser():
     with open(current_path + '/Ids.xml', 'r') as xml_file:
         ids = xml_file.readlines()
-    t1 = []
+    QueryKey = None
+    WebEnv = None
     for line in ids:
-        t1.append(line.split("><"))
-    QueryKey = t1[2][4].strip("QueryKey></QueryKey")
-    WebEnv = t1[2][5].strip("WebEnv></WebEnv")
+        line = line.strip().split("><")
+        for l in line:
+            if 'QueryKey>' in l and '</QueryKey' in l :
+                QueryKey = l.strip("QueryKey></QueryKey")
+            elif 'WebEnv>' in l and '</WebEnv>' in l:
+                WebEnv = l.strip("WebEnv></WebEnv>")
     return QueryKey, WebEnv
 
 def fasta_printer(QueryKey, WebEnv):
-    fetch = f'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi\?db\="{database}"\&usehistory\=y\&query_key\="{QueryKey}"\&WebEnv\="{WebEnv}"\&rettype\=fasta'
+    fetch = f'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi\?db\="{database}"\&usehistory\=y\&query_key\={QueryKey}\&WebEnv\={WebEnv}\&rettype\=fasta'
     url_maker = f'wget {fetch} -O sequences.fasta'
     printer = f'cat sequences.fasta'
     subprocess.run(url_maker, shell=True)
