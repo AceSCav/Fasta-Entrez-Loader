@@ -21,11 +21,11 @@ def ids_parser():
     WebEnv = None
     for line in ids:
         line = line.strip().split("><")
-        for l in line:
-            if 'QueryKey>' in l and '</QueryKey' in l :
-                QueryKey = l.strip("QueryKey></QueryKey")
-            elif 'WebEnv>' in l and '</WebEnv>' in l:
-                WebEnv = l.strip("WebEnv></WebEnv>")
+        for line_parsed in line:
+            if 'QueryKey>' in line_parsed and '</QueryKey' in line_parsed :
+                QueryKey = line_parsed.strip("QueryKey></QueryKey")
+            elif 'WebEnv>' in line_parsed and '</WebEnv>' in line_parsed:
+                WebEnv = line_parsed.strip("WebEnv></WebEnv>")
     return QueryKey, WebEnv
 
 def fasta_printer(QueryKey, WebEnv):
