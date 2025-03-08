@@ -35,4 +35,4 @@ Example Execution:
 
 License
 	This project is licensed under the GNU General Public License Version 3, 29 June 2007. You are free to use, modify, and distribute it under the terms of this license.
-	This project is licensed under the MIT License. Feel free to modify and distribute it.
+	
