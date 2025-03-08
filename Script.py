@@ -1,6 +1,7 @@
 import sys
 import subprocess
 import os
+import xml.etree.ElementTree as ET
 
 if len(sys.argv) != 3:
     print("Usage: Script.py 'database' 'organism'")
@@ -16,16 +17,11 @@ def ids_getter():
 
 def ids_parser():
     with open(current_path + '/Ids.xml', 'r') as xml_file:
-        ids = xml_file.readlines()
-    QueryKey = None
-    WebEnv = None
-    for line in ids:
-        line = line.strip().split("><")
-        for line_parsed in line:
-            if 'QueryKey>' in line_parsed and '</QueryKey' in line_parsed :
-                QueryKey = line_parsed.strip("QueryKey></QueryKey")
-            elif 'WebEnv>' in line_parsed and '</WebEnv>' in line_parsed:
-                WebEnv = line_parsed.strip("WebEnv></WebEnv>")
+        ids = xml_file.read()
+    root = ET.fromstring(ids)    
+    QueryKey = root.find('QueryKey').text if root.find('QueryKey') is not None else None
+    WebEnv = root.find('WebEnv').text if root.find('WebEnv') is not None else None
+    print(QueryKey, WebEnv)
     return QueryKey, WebEnv
 
 def fasta_printer(QueryKey, WebEnv):
