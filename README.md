@@ -23,7 +23,7 @@ Installation
 Usage
 	Run the script with the following arguments:
 		
-  	python Script.py "database" "organism" x
+  	python3 Script.py "database" "organism" x
 	
 	database: Name of the NCBI database (nucleotide, protein)
 	organism: Name of the target organism (Homo sapiens)
@@ -31,7 +31,7 @@ Usage
 
 Example Execution:
 	
- 	python Script.py "nucleotide" "Homo sapiens" 10
+ 	python3 Script.py "nucleotide" "Homo sapiens" 10
 
 License
 	This project is licensed under the GNU General Public License Version 3, 29 June 2007. You are free to use, modify, and distribute it under the terms of this license.
