@@ -16,7 +16,7 @@ Installation
 
 	Clone this repository:
 		git clone https://github.com/AceSCav/Fasta-Entrez-Loader
-		cd your-repository
+		cd Fasta-Entrez-Loader
 	Ensure wget is installed:
 		sudo apt install wget
 
