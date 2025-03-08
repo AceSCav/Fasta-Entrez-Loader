@@ -38,15 +38,13 @@ def ids_parser():
     """
     with open(current_path + '/Ids.xml', 'r') as xml_file:
         ids = xml_file.read()
-    root = ET.fromstring(ids)    
+    root = ET.fromstring(ids)   
+    QueryKey = None 
+    WebEnv = None
     if root.find('QueryKey') is not None:
         QueryKey = root.find('QueryKey').text 
-    else:
-        None
     if root.find('WebEnv') is not None:
         WebEnv = root.find('WebEnv').text 
-    else:
-        None
     return QueryKey, WebEnv
 
 def fasta_printer(QueryKey, WebEnv):
