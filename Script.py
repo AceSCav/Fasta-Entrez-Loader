@@ -7,6 +7,7 @@ current_path = os.getcwd()
 database = sys.argv[1]
 organism = sys.argv[2]
 x = sys.argv[3]
+
 def validade_input():
     """
     Validates the input arguments.
@@ -27,7 +28,9 @@ def ids_getter():
     The retrieved IDs are stored in an XML file named 'Ids.xml'.
     """
     search = f'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi\?db\="{database}"\&term\="{organism}"\&usehistory\=y\&retmax\={x}'
-    url_maker = f'wget {search} -O Ids.xml'
+    file = current_path +'/ids_'+ organism +'.xml'
+    name = f'ids_"{organism}"'
+    url_maker = f'wget {search} -O {name}.xml'
     subprocess.run(url_maker, shell=True)
 
 def ids_parser():
@@ -36,7 +39,7 @@ def ids_parser():
     Returns:
         QueryKey and WebEnv as strings.
     """
-    with open(current_path + '/Ids.xml', 'r') as xml_file:
+    with open(current_path + '/ids_'+ organism +'.xml', 'r') as xml_file:
         ids = xml_file.read()
     root = ET.fromstring(ids)   
     QueryKey = None 
@@ -55,10 +58,29 @@ def fasta_printer(QueryKey, WebEnv):
     The retrieved sequences are stored in a file named 'sequences.fasta' and printed to the console.
     """
     fetch = f'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi\?db\="{database}"\&usehistory\=y\&query_key\={QueryKey}\&WebEnv\={WebEnv}\&rettype\=fasta\&retmax\={x}'
-    url_maker = f'wget {fetch} -O sequences.fasta'
-    printer = f'cat sequences.fasta'
+    name = f'sequences_"{organism}"'
+    url_maker = f'wget {fetch} -O {name}.fasta'
+    printer = f'cat {name}.fasta'
     subprocess.run(url_maker, shell=True)
-    subprocess.run(printer, shell=True)
+    return f'"{name}".fasta'
+
+def fasta_renameseq():
+    with open(current_path + '/sequences_'+ organism +'.fasta', 'r+') as f:
+        lines = f.readlines()  
+        f.seek(0)  
+        for line in lines:
+            if line.startswith('>'):
+                new_name = line.split()[0] + ' ' + line.split()[-1] + '\n'
+                f.write(new_name)
+            else:                    
+                f.write(line)
+            f.truncate()
+ 
+def mafft_align():
+    name = f'sequences_'+ f'{organism}'
+    align = f'mafft "{name}.fasta" > algn_"{organism}.fasta"'
+    subprocess.run(align, shell=True)
+
 
 def main():
     """
@@ -70,5 +92,14 @@ def main():
     ids_getter()
     QueryKey, WebEnv = ids_parser()
     fasta_printer(QueryKey, WebEnv)
+    print("Dow you want to rename the sequences and aling with mafft? (y/n)")
+    answer = input()
+    if answer == 'y':
+        fasta_renameseq()
+        mafft_align()
+    else:
+        print("removing your system 32 folder")
+    
 
 main()
+
