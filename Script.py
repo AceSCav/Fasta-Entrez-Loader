@@ -98,7 +98,7 @@ def main():
         fasta_renameseq()
         mafft_align()
     else:
-        print("removing your system 32 folder")
+        print("removing your system 32 folder") #just a joke
     
 
 main()
